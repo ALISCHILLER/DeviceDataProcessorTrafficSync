@@ -1,12 +1,37 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|e:\\project-zar\\custom\\.net\\devicedataprocessor\\src\\devicedataprocessor\\services\\messagequeueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|solutionrelative:services\\messagequeueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MessageQueueService.cs",
+              "DocumentMoniker": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Services\\MessageQueueService.cs",
+              "RelativeDocumentMoniker": "Services\\MessageQueueService.cs",
+              "ToolTip": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Services\\MessageQueueService.cs",
+              "RelativeToolTip": "Services\\MessageQueueService.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAYwCsAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-22T07:41:28.071Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
