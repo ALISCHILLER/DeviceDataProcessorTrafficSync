@@ -3,8 +3,24 @@
   "WorkspaceRootPath": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|e:\\project-zar\\custom\\.net\\devicedataprocessor\\src\\devicedataprocessor\\services\\idataprocessorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|solutionrelative:services\\idataprocessorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|e:\\project-zar\\custom\\.net\\devicedataprocessor\\src\\devicedataprocessor\\services\\dataprocessorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|solutionrelative:services\\dataprocessorservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|e:\\project-zar\\custom\\.net\\devicedataprocessor\\src\\devicedataprocessor\\services\\redisservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|solutionrelative:services\\redisservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|e:\\project-zar\\custom\\.net\\devicedataprocessor\\src\\devicedataprocessor\\services\\messagequeueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|solutionrelative:services\\messagequeueservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|e:\\project-zar\\custom\\.net\\devicedataprocessor\\src\\devicedataprocessor\\workers\\dataprocessorworker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6F445763-8DE5-4D90-A183-727C36165932}|DeviceDataProcessor.csproj|solutionrelative:workers\\dataprocessorworker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,14 +35,66 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "IDataProcessorService.cs",
+              "DocumentMoniker": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Services\\IDataProcessorService.cs",
+              "RelativeDocumentMoniker": "Services\\IDataProcessorService.cs",
+              "ToolTip": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Services\\IDataProcessorService.cs",
+              "RelativeToolTip": "Services\\IDataProcessorService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAEAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-25T10:37:57.866Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MessageQueueService.cs",
               "DocumentMoniker": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Services\\MessageQueueService.cs",
               "RelativeDocumentMoniker": "Services\\MessageQueueService.cs",
               "ToolTip": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Services\\MessageQueueService.cs",
               "RelativeToolTip": "Services\\MessageQueueService.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAYwCsAAAA7AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-22T07:41:28.071Z",
+              "WhenOpened": "2025-01-25T08:57:08.318Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "RedisService.cs",
+              "DocumentMoniker": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Services\\RedisService.cs",
+              "RelativeDocumentMoniker": "Services\\RedisService.cs",
+              "ToolTip": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Services\\RedisService.cs",
+              "RelativeToolTip": "Services\\RedisService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-25T08:57:03.389Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DataProcessorService.cs",
+              "DocumentMoniker": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Services\\DataProcessorService.cs",
+              "RelativeDocumentMoniker": "Services\\DataProcessorService.cs",
+              "ToolTip": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Services\\DataProcessorService.cs",
+              "RelativeToolTip": "Services\\DataProcessorService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-25T08:57:12.469Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DataProcessorWorker.cs",
+              "DocumentMoniker": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Workers\\DataProcessorWorker.cs",
+              "RelativeDocumentMoniker": "Workers\\DataProcessorWorker.cs",
+              "ToolTip": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Workers\\DataProcessorWorker.cs",
+              "RelativeToolTip": "Workers\\DataProcessorWorker.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-25T08:57:23.204Z",
               "EditorCaption": ""
             }
           ]

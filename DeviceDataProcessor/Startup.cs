@@ -9,6 +9,7 @@ using StackExchange.Redis;
 using Microsoft.Extensions.Configuration;
 using DeviceDataProcessor.Models;
 using DeviceDataProcessor.DTOs;
+using DeviceDataProcessor.Workers; // اضافه کردن namespace مربوط به Worker
 
 public class Startup
 {
@@ -35,6 +36,9 @@ public class Startup
         services.AddScoped<LoggingService>(); // افزودن سرویس لاگینگ
         services.AddScoped<IMessageQueueService>(provider => new MessageQueueService(Configuration["QueueSettings:HostName"])); // افزودن سرویس صف پیام
         services.AddSingleton<IValidator<LoginRequest>, LoginRequestValidator>(); // افزودن اعتبارسنجی درخواست ورود
+
+        services.AddHttpClient(); // افزودن HttpClient برای ارسال درخواست‌ها
+        services.AddSingleton<DataProcessorWorker>(); // ثبت DataProcessorWorker به عنوان سرویس
 
         services.AddControllers(); // افزودن کنترلرها
         services.AddEndpointsApiExplorer(); // افزودن Explorer برای نقاط انتهایی

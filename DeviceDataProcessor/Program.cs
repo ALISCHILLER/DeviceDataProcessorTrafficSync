@@ -1,50 +1,24 @@
+ï»¿using DeviceDataProcessor.Workers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using DeviceDataProcessor.Data;
-using DeviceDataProcessor.Services;
-using DeviceDataProcessor.Validators;
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using StackExchange.Redis;
-using Microsoft.Extensions.Configuration;
-using DeviceDataProcessor.Models;
-using DeviceDataProcessor.DTOs;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// ÇİÒæÏä ÓÑæ?ÓåÇ Èå ˜ÇäÊ?äÑ DI
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); // ÇÊÕÇá Èå Ï?ÊÇÈ?Ó SQL
-
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis"))); // ÇÊÕÇá Èå Redis
-builder.Services.AddScoped<IRepository<User>, UserRepository>(); // ÇİÒæÏä ãÎÒä ˜ÇÑÈÑÇä
-builder.Services.AddScoped<IDataProcessorService, DataProcessorService>(); // ÇİÒæÏä ÓÑæ?Ó ÑÏÇÒÔ ÏÇÏå
-builder.Services.AddScoped<IMqttService, MqttService>(); // ÇİÒæÏä ÓÑæ?Ó MQTT
-builder.Services.AddScoped<IAuthService, AuthService>(); // ÇİÒæÏä ÓÑæ?Ó ÇÍÑÇÒ åæ?Ê
-builder.Services.AddScoped<RedisService>(); // ÇİÒæÏä ÓÑæ?Ó Redis
-builder.Services.AddScoped<ApiService>(); // ÇİÒæÏä ÓÑæ?Ó API
-builder.Services.AddScoped<LoggingService>(); // ÇİÒæÏä ÓÑæ?Ó áÇ?ä
-builder.Services.AddScoped<IMessageQueueService>(provider => new MessageQueueService(builder.Configuration["QueueSettings:HostName"])); // ÇİÒæÏä ÓÑæ?Ó Õİ ?Çã
-builder.Services.AddSingleton<IValidator<LoginRequest>, LoginRequestValidator>(); // ÇİÒæÏä ÇÚÊÈÇÑÓäÌ? ÏÑÎæÇÓÊ æÑæÏ
-
-builder.Services.AddHttpClient(); // ÇİÒæÏä HttpClient ÈÑÇ? ÇÑÓÇá ÏÑÎæÇÓÊåÇ
-
-builder.Services.AddControllers(); // ÇİÒæÏä ˜äÊÑáÑåÇ
-builder.Services.AddEndpointsApiExplorer(); // ÇİÒæÏä Explorer ÈÑÇ? äŞÇØ ÇäÊåÇ??
-builder.Services.AddSwaggerGen(); // ÇİÒæÏä Swagger ÈÑÇ? ãÓÊäÏÓÇÒ? API
-
-var app = builder.Build();
-
-// ?˜ÑÈäÏ? ÎØ áæáå ÏÑÎæÇÓÊ
-if (app.Environment.IsDevelopment())
+public class Program
 {
-    app.UseSwagger(); // İÚÇáÓÇÒ? Swagger ÏÑ ãÍ?Ø ÊæÓÚå
-    app.UseSwaggerUI(); // İÚÇáÓÇÒ? UI Swagger
+    public static void Main(string[] args)
+    {
+        var host = CreateHostBuilder(args).Build();
+
+        // Ø´Ø±ÙˆØ¹ Ù¾Ø±Ø¯Ø§Ø²Ø´ Ø¯Ø§Ø¯Ù‡â€ŒÙ‡Ø§
+        var dataProcessorWorker = host.Services.GetRequiredService<DataProcessorWorker>();
+        Task.Run(() => dataProcessorWorker.StartProcessingAsync()); // Ø§Ø¬Ø±Ø§ÛŒ Ù¾Ø±Ø¯Ø§Ø²Ø´ Ø¯Ø§Ø¯Ù‡â€ŒÙ‡Ø§ Ø¯Ø± Ù¾Ø³â€ŒØ²Ù…ÛŒÙ†Ù‡
+
+        host.Run(); // Ø§Ø¬Ø±Ø§ÛŒ Ø¨Ø±Ù†Ø§Ù…Ù‡
+    }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>(); // Ø§Ø³ØªÙØ§Ø¯Ù‡ Ø§Ø² Ú©Ù„Ø§Ø³ Startup
+            });
 }
-
-app.UseHttpsRedirection(); // İÚÇáÓÇÒ? HTTPS
-app.UseAuthorization(); // İÚÇáÓÇÒ? ãÌæÒåÇ
-app.MapControllers(); // äŞÔåÈÑÏÇÑ? ˜äÊÑáÑåÇ
-
-app.Run(); // ÇÌÑÇ? ÈÑäÇãå

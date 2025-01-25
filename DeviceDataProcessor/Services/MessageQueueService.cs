@@ -2,6 +2,7 @@
 using RabbitMQ.Client;
 using DeviceDataProcessor.DTOs;
 using System.Text;
+using System.Threading.Channels;
 
 namespace DeviceDataProcessor.Services
 {
@@ -33,6 +34,7 @@ namespace DeviceDataProcessor.Services
 
         public async Task EnqueueAsync(DeviceDataDto data)
         {
+
             if (_channel == null)
             {
                 throw new InvalidOperationException("Channel is not initialized. Call InitializeAsync first.");
@@ -41,20 +43,40 @@ namespace DeviceDataProcessor.Services
             var json = JsonSerializer.Serialize(data); // سریالیزه کردن داده
             var body = Encoding.UTF8.GetBytes(json); // تبدیل به بایت
 
-            var properties = _channel.CreateBasicProperties();
-            properties.Persistent = true; // تعیین اینکه پیام پایدار باشد
+            var props = new BasicProperties
+            {
+                Persistent = true          // تعیین اینکه پیام پایدار باشد
+            };
 
             // ارسال پیام به صف
             await Task.Run(() =>
                 _channel.BasicPublishAsync(
                     exchange: "",
                     routingKey: "device_data_queue",
-                    basicProperties: properties,
-                    body: body
+                    body: body,
+                    basicProperties: props,
+                    mandatory: true
                 )
             );
 
             Console.WriteLine($" [x] Sent {json}"); // چاپ پیام ارسال شده
+        }
+
+        public async Task<DeviceDataDto> DequeueAsync()
+        {
+            var result = await Task.Run(() => _channel.BasicGetAsync("device_data_queue", autoAck: false));
+            if (result == null)
+            {
+                return null; // اگر پیام وجود نداشت، null برمی‌گرداند
+            }
+
+            var json = Encoding.UTF8.GetString(result.Body.ToArray());
+            var deviceData = JsonSerializer.Deserialize<DeviceDataDto>(json); // سریالیزه کردن پیام به DTO
+
+            // تأیید پردازش موفق
+            _channel.BasicAckAsync(result.DeliveryTag, false);
+
+            return deviceData; // برگرداندن داده دستگاه
         }
 
         public void Dispose()

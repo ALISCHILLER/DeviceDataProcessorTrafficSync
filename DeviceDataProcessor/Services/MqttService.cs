@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text.Json;
 using DeviceDataProcessor.DTOs;
 using MQTTnet.AspNetCoreEx;
+using DeviceDataProcessor.Services; // فرض بر این است که MessageQueueService در این namespace قرار دارد
 
 namespace DeviceDataProcessor.Services
 {
@@ -13,13 +14,15 @@ namespace DeviceDataProcessor.Services
     {
         private readonly MqttServer _mqttServer; // سرور MQTT
         private readonly HttpClient _httpClient; // کلاینت HTTP
+        private readonly IMessageQueueService _messageQueueService; // سرویس صف پیام
 
-        public MqttService(HttpClient httpClient)
+        public MqttService(HttpClient httpClient, IMessageQueueService messageQueueService)
         {
             var factory = new MqttServerFactory(); // ایجاد کارخانه MQTT
             var mqttServerOptions = new MqttServerOptionsBuilder().WithDefaultEndpoint().Build();
             _mqttServer = factory.CreateMqttServer(mqttServerOptions); // ایجاد سرور MQTT
             _httpClient = httpClient; // دریافت کلاینت HTTP
+            _messageQueueService = messageQueueService; // دریافت سرویس صف پیام
         }
 
         public async Task StartAsync(int port)
@@ -27,52 +30,26 @@ namespace DeviceDataProcessor.Services
             var options = new MqttServerOptionsBuilder()
                 .WithDefaultEndpoint()
                 .WithDefaultEndpointPort(port)
-            .Build();
+                .Build();
 
-         
-
-            _mqttServer.InterceptingPublishAsync += async args =>
-            {
-                Console.WriteLine($"Message published: {args.ApplicationMessage.Topic}");
-                // Custom handling for the message
-                await Task.CompletedTask;
-            };
-
-
-          //  _mqttServer.ApplicationMessageEnqueuedOrDroppedAsync += OnMessageReceived; // تنظیم رویداد دریافت پیام
-
-            _mqttServer.ApplicationMessageEnqueuedOrDroppedAsync += async args =>// تنظیم رویداد دریافت پیام
+            _mqttServer.ApplicationMessageEnqueuedOrDroppedAsync += async args =>
             {
                 Console.WriteLine($"Message enqueued or dropped: {args.ApplicationMessage.Topic}");
                 var message = Encoding.UTF8.GetString(args.ApplicationMessage.Payload); // تبدیل پیام به رشته
-                OnMessageReceived(message);
-                // Handle the message here
-                await Task.CompletedTask;
+                await OnMessageReceived(message); // پردازش پیام
             };
 
             await _mqttServer.StartAsync(); // شروع به کار سرور
         }
 
-        private async Task OnMessageReceived(String message)
+        private async Task OnMessageReceived(string message)
         {
-         //   var message = Encoding.UTF8.GetString(e.ApplicationMessage.Payload); // تبدیل پیام به رشته
             var deviceData = JsonSerializer.Deserialize<DeviceDataDto>(message); // سریالیزه کردن پیام به DTO
 
             if (deviceData != null)
             {
-                await SendDataToApiAsync(deviceData); // ارسال داده به API خارجی
-            }
-        }
-
-        private async Task SendDataToApiAsync(DeviceDataDto data)
-        {
-            var json = JsonSerializer.Serialize(data); // سریالیزه کردن داده
-            var content = new StringContent(json, Encoding.UTF8, "application/json"); // ساخت محتوای JSON
-
-            var response = await _httpClient.PostAsync("https://www.example.com/", content); // ارسال داده به API
-            if (!response.IsSuccessStatusCode)
-            {
-                // ثبت خطا در صورت عدم موفقیت
+                // ارسال داده به صف پیام
+                await _messageQueueService.EnqueueAsync(deviceData);
             }
         }
 

@@ -1,0 +1,8 @@
+E:\project-zar\custom\.net\DeviceDataProcessor\src\DeviceDataProcessor\obj\Debug\net9.0\DeviceDataProcessor.csproj.AssemblyReference.cache
+E:\project-zar\custom\.net\DeviceDataProcessor\src\DeviceDataProcessor\obj\Debug\net9.0\DeviceDataProcessor.GeneratedMSBuildEditorConfig.editorconfig
+E:\project-zar\custom\.net\DeviceDataProcessor\src\DeviceDataProcessor\obj\Debug\net9.0\DeviceDataProcessor.AssemblyInfoInputs.cache
+E:\project-zar\custom\.net\DeviceDataProcessor\src\DeviceDataProcessor\obj\Debug\net9.0\DeviceDataProcessor.AssemblyInfo.cs
+E:\project-zar\custom\.net\DeviceDataProcessor\src\DeviceDataProcessor\obj\Debug\net9.0\DeviceDataProcessor.csproj.CoreCompileInputs.cache
+E:\project-zar\custom\.net\DeviceDataProcessor\src\DeviceDataProcessor\obj\Debug\net9.0\DeviceDataProcessor.MvcApplicationPartsAssemblyInfo.cs
+E:\project-zar\custom\.net\DeviceDataProcessor\src\DeviceDataProcessor\obj\Debug\net9.0\DeviceDataProcessor.MvcApplicationPartsAssemblyInfo.cache
+E:\project-zar\custom\.net\DeviceDataProcessor\src\DeviceDataProcessor\obj\Debug\net9.0\DeviceDataProcessor.sourcelink.json
