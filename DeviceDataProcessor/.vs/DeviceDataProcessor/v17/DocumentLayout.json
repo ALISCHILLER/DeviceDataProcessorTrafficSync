@@ -40,7 +40,7 @@
               "RelativeDocumentMoniker": "Services\\IDataProcessorService.cs",
               "ToolTip": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Services\\IDataProcessorService.cs",
               "RelativeToolTip": "Services\\IDataProcessorService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAEAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAwAEAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-25T10:37:57.866Z",
               "EditorCaption": ""
@@ -55,8 +55,7 @@
               "RelativeToolTip": "Services\\MessageQueueService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-25T08:57:08.318Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-25T08:57:08.318Z"
             },
             {
               "$type": "Document",
@@ -68,8 +67,7 @@
               "RelativeToolTip": "Services\\RedisService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-25T08:57:03.389Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-25T08:57:03.389Z"
             },
             {
               "$type": "Document",
@@ -81,8 +79,7 @@
               "RelativeToolTip": "Services\\DataProcessorService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-25T08:57:12.469Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-25T08:57:12.469Z"
             },
             {
               "$type": "Document",
@@ -94,8 +91,7 @@
               "RelativeToolTip": "Workers\\DataProcessorWorker.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-25T08:57:23.204Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-25T08:57:23.204Z"
             }
           ]
         }
