@@ -6,6 +6,7 @@ using System.Threading.Channels;
 
 namespace DeviceDataProcessor.Services
 {
+    // پیاده‌سازی IMessageQueueService برای مدیریت صف پیام
     public class MessageQueueService : IMessageQueueService
     {
         private readonly ConnectionFactory _factory; // کارخانه RabbitMQ
@@ -31,7 +32,7 @@ namespace DeviceDataProcessor.Services
                 arguments: null
             );
         }
-
+        // متد برای افزودن داده به صف
         public async Task EnqueueAsync(DeviceDataDto data)
         {
 
@@ -48,8 +49,10 @@ namespace DeviceDataProcessor.Services
                 Persistent = true          // تعیین اینکه پیام پایدار باشد
             };
 
-            // ارسال پیام به صف
-            await Task.Run(() =>
+            try
+            {
+                // ارسال پیام به صف
+                await Task.Run(() =>
                 _channel.BasicPublishAsync(
                     exchange: "",
                     routingKey: "device_data_queue",
@@ -58,10 +61,16 @@ namespace DeviceDataProcessor.Services
                     mandatory: true
                 )
             );
-
+            }
+            catch (Exception ex)
+            {
+                // ثبت خطا در صورت بروز مشکل در ارسال پیام
+                Console.WriteLine($"خطا در ارسال پیام: {ex.Message}");
+            }
             Console.WriteLine($" [x] Sent {json}"); // چاپ پیام ارسال شده
         }
 
+        // متد برای دریافت داده از صف
         public async Task<DeviceDataDto> DequeueAsync()
         {
             var result = await Task.Run(() => _channel.BasicGetAsync("device_data_queue", autoAck: false));
@@ -70,7 +79,7 @@ namespace DeviceDataProcessor.Services
                 return null; // اگر پیام وجود نداشت، null برمی‌گرداند
             }
 
-            var json = Encoding.UTF8.GetString(result.Body.ToArray());
+            var json = Encoding.UTF8.GetString(result.Body.ToArray());// تبدیل بایت به رشته
             var deviceData = JsonSerializer.Deserialize<DeviceDataDto>(json); // سریالیزه کردن پیام به DTO
 
             // تأیید پردازش موفق

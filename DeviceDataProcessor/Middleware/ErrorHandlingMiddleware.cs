@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace DeviceDataProcessor.Middleware
 {
+    // Middleware برای مدیریت خطاها در درخواست‌ها
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next; // دلیگیت درخواست

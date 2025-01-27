@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging; // استفاده از لاگر
 
 namespace DeviceDataProcessor.Services
 {
+    // سرویس برای ثبت لاگ‌ها
     public class LoggingService
     {
         private readonly ILogger<LoggingService> _logger; // لاگر

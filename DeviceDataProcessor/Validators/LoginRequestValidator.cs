@@ -3,6 +3,7 @@ using DeviceDataProcessor.DTOs;
 
 namespace DeviceDataProcessor.Validators
 {
+    // اعتبارسنجی درخواست ورود
     public class LoginRequestValidator : AbstractValidator<LoginRequest>
     {
         public LoginRequestValidator()

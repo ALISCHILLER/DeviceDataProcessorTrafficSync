@@ -1,5 +1,6 @@
 ﻿namespace DeviceDataProcessor.Models
 {
+    // مدل پاسخ API که اطلاعات مربوط به پاسخ‌های دریافتی از سرور خارجی را ذخیره می‌کند
     public class ApiResponse
     {
         public int Id { get; set; } // شناسه پاسخ API

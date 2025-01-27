@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Xunit;
 using DeviceDataProcessor.DTOs;
 using Moq; // برای استفاده از موک
+using StackExchange.Redis; // برای استفاده از Redis
 
 namespace DeviceDataProcessor.Tests
 {
@@ -25,12 +26,20 @@ namespace DeviceDataProcessor.Tests
             var messageQueueServiceMock = new Mock<IMessageQueueService>();
             messageQueueServiceMock.Setup(m => m.EnqueueAsync(It.IsAny<DeviceDataDto>())).Returns(Task.CompletedTask); // تنظیم موک
 
+            // ایجاد موک برای IConnectionMultiplexer
+            var redisMock = new Mock<IConnectionMultiplexer>();
+            var redisDbMock = new Mock<IDatabase>();
+            redisMock.Setup(m => m.GetDatabase(It.IsAny<int>(), It.IsAny<object>())).Returns(redisDbMock.Object);
+
+            // ایجاد سرویس Redis
+            var redisService = new RedisService(redisMock.Object); // استفاده از موک Redis
+
             // ایجاد سرویس پردازش داده
             _dataProcessorService = new DataProcessorService(
                 new DeviceDataRepository(_context), // استفاده از DeviceDataRepository
+                new DeviceRepository(_context), // استفاده از DeviceRepository
                 messageQueueServiceMock.Object, // استفاده از موک
-                new RedisService(null) // می‌توانید یک پیاده‌سازی مناسب برای RedisService ایجاد کنید
-            
+                redisService // ارسال RedisService
             );
         }
 

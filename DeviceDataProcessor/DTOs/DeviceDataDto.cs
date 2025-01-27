@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace DeviceDataProcessor.DTOs
+﻿namespace DeviceDataProcessor.DTOs
 {
+    // DTO برای ارسال داده‌های دستگاه
     public class DeviceDataDto
     {
         public string DeviceId { get; set; } // شناسه دستگاه

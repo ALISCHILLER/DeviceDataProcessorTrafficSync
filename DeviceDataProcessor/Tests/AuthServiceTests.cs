@@ -4,6 +4,7 @@ using DeviceDataProcessor.Models;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 using DeviceDataProcessor.Settings;
+using Microsoft.Extensions.Options;
 
 namespace DeviceDataProcessor.Tests
 {
@@ -19,7 +20,15 @@ namespace DeviceDataProcessor.Tests
                 .Options;
 
             _context = new ApplicationDbContext(options); // ایجاد کانتکست
-            _authService = new AuthService(new UserRepository(_context), new JwtSettings()); // ایجاد سرویس احراز هویت
+
+            // تنظیمات JWT
+            var jwtSettings = Options.Create(new JwtSettings
+            {
+                Secret = "YourSuperSecretKeyHere",
+                ExpiryInHours = 1
+            });
+
+            _authService = new AuthService(new UserRepository(_context), jwtSettings); // ایجاد سرویس احراز هویت
         }
 
         [Fact]
@@ -31,6 +40,13 @@ namespace DeviceDataProcessor.Tests
 
             var token = await _authService.AuthenticateAsync("test", "hash"); // احراز هویت کاربر
             Assert.NotNull(token); // بررسی اینکه توکن بازگشت داده شده است
+        }
+
+        [Fact]
+        public async Task AuthenticateAsync_InvalidCredentials_ReturnsNull()
+        {
+            var token = await _authService.AuthenticateAsync("invalidUser", "invalidPassword"); // احراز هویت کاربر نامعتبر
+            Assert.Null(token); // بررسی اینکه توکن null برمی‌گرداند
         }
     }
 }

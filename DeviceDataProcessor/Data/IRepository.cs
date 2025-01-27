@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace DeviceDataProcessor.Data
 {
+    // اینترفیس عمومی برای مخازن
     public interface IRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAllAsync(); // دریافت همه موجودیت‌ها

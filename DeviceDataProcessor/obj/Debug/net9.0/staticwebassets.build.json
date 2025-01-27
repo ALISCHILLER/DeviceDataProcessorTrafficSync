@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "iHnXNPNtgerowNT4ul7xlI6sDuR8g5KznEDYW2tQoV4=",
+  "Source": "DeviceDataProcessor",
+  "BasePath": "_content/DeviceDataProcessor",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

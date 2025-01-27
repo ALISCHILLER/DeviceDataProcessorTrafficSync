@@ -1,10 +1,11 @@
 ﻿using DeviceDataProcessor.Models;
-using DeviceDataProcessor.Data;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DeviceDataProcessor.Data
 {
+    // پیاده‌سازی IRepository برای مدیریت کاربران
     public class UserRepository : IRepository<User>
     {
         private readonly ApplicationDbContext _context; // کانتکست دیتابیس

@@ -4,6 +4,7 @@ using System.Threading.Tasks; // برای استفاده از async و await
 
 namespace DeviceDataProcessor.Services
 {
+    // سرویس برای مدیریت ارتباط با Redis
     public class RedisService
     {
         private readonly IDatabase _redisDb; // پایگاه داده Redis

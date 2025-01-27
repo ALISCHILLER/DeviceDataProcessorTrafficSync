@@ -3,6 +3,7 @@ using DeviceDataProcessor.Models;
 
 namespace DeviceDataProcessor.Data
 {
+    // کانتکست دیتابیس برای مدیریت ارتباط با پایگاه داده
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
