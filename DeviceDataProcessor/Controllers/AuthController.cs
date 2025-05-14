@@ -9,39 +9,64 @@ namespace DeviceDataProcessor.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService; // سرویس احراز هویت
-        private readonly IValidator<LoginRequest> _loginValidator; // اعتبارسنجی درخواست ورود
+        // سرویس احراز هویت
+        private readonly IAuthService _authService;
 
-        public AuthController(IAuthService authService, IValidator<LoginRequest> loginValidator)
+        // اعتبارسنجی درخواست ورود
+        private readonly IValidator<LoginRequest> _loginValidator;
+
+        // اعتبارسنجی درخواست ثبت نام
+        private readonly IValidator<RegisterRequest> _registerValidator;
+
+        // سازنده کلاس - Dependency Injection
+        public AuthController(
+            IAuthService authService,
+            IValidator<LoginRequest> loginValidator,
+            IValidator<RegisterRequest> registerValidator)
         {
-            _authService = authService; // دریافت سرویس احراز هویت
-            _loginValidator = loginValidator; // دریافت اعتبارسنجی
+            _authService = authService;
+            _loginValidator = loginValidator;
+            _registerValidator = registerValidator;
         }
 
-        // متد برای ورود کاربر
+        /// <summary>
+        /// متد ورود کاربر
+        /// </summary>
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
-            var validationResult = await _loginValidator.ValidateAsync(request); // اعتبارسنجی درخواست
+            // اعتبارسنجی ورودی با FluentValidation
+            var validationResult = await _loginValidator.ValidateAsync(request);
             if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors); // در صورت نامعتبر بودن ورودی، خطا برمی‌گرداند
+                return BadRequest(validationResult.Errors); // خطا در ورودی
 
-            var token = await _authService.AuthenticateAsync(request.Username, request.Password); // احراز هویت کاربر
+            // احراز هویت کاربر
+            var token = await _authService.AuthenticateAsync(request.Username, request.Password);
+
             if (token == null)
-                return Unauthorized(); // در صورت ناموفق بودن احراز هویت، خطای عدم مجوز برمی‌گرداند
+                return Unauthorized(); // نام کاربری یا رمز اشتباه است
 
-            return Ok(new { Token = token }); // در صورت موفقیت، توکن را برمی‌گرداند
+            return Ok(new { Token = token }); // توکن JWT به کاربر داده می‌شود
         }
 
-        // متد برای ثبت نام کاربر جدید
+        /// <summary>
+        /// متد ثبت نام کاربر جدید
+        /// </summary>
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequest request)
         {
-            var result = await _authService.RegisterAsync(request.Username, request.Password, request.Role); // ثبت نام کاربر
-            if (!result)
-                return BadRequest("Registration failed."); // در صورت ناموفق بودن، خطا برمی‌گرداند
+            // اعتبارسنجی ورودی با FluentValidation
+            var validationResult = await _registerValidator.ValidateAsync(request);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors); // خطا در ورودی
 
-            return Ok("User registered successfully."); // در صورت موفقیت، پیام موفقیت برمی‌گرداند
+            // ثبت کاربر جدید
+            var result = await _authService.RegisterAsync(request.Username, request.Password, request.Role);
+
+            if (!result)
+                return BadRequest("ثبت نام ناموفق بود."); // کاربر قبلاً وجود دارد
+
+            return Ok("کاربر با موفقیت ثبت شد."); // ثبت موفق
         }
     }
 }

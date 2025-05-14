@@ -5,25 +5,52 @@ using System.Threading.Tasks;
 
 namespace DeviceDataProcessor.Data
 {
-    // پیاده‌سازی IRepository برای مدیریت دستگاه‌ها
+    /// <summary>
+    /// پیاده‌سازی IRepository<Device> برای مدیریت دستگاه‌ها در دیتابیس
+    /// </summary>
     public class DeviceRepository : IRepository<Device>
     {
-        private readonly ApplicationDbContext _context; // کانتکست دیتابیس
+        private readonly ApplicationDbContext _context;
 
         public DeviceRepository(ApplicationDbContext context)
         {
-            _context = context; // دریافت کانتکست
+            _context = context;
         }
 
-        public async Task<IEnumerable<Device>> GetAllAsync() => await _context.Devices.ToListAsync(); // دریافت همه دستگاه‌ها
-        public async Task<Device> GetByIdAsync(int id) => await _context.Devices.FindAsync(id); // دریافت دستگاه بر اساس شناسه
-        public async Task AddAsync(Device device) => await _context.Devices.AddAsync(device); // افزودن دستگاه
-        public async Task UpdateAsync(Device device) => _context.Devices.Update(device); // به‌روزرسانی دستگاه
+        public async Task<IEnumerable<Device>> GetAllAsync() =>
+            await _context.Devices.Include(d => d.Data).AsNoTracking().ToListAsync();
+
+        public async Task<Device> GetByIdAsync(int id) =>
+            await _context.Devices.Include(d => d.Data).FirstOrDefaultAsync(d => d.Id == id);
+
+        public async Task AddAsync(Device device)
+        {
+            await _context.Devices.AddAsync(device);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Device device)
+        {
+            _context.Devices.Update(device);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task DeleteAsync(int id)
         {
-            var device = await _context.Devices.FindAsync(id); // پیدا کردن دستگاه بر اساس شناسه
+            var device = await _context.Devices.FindAsync(id);
             if (device != null)
-                _context.Devices.Remove(device); // حذف دستگاه
+            {
+                _context.Devices.Remove(device);
+                await _context.SaveChangesAsync();
+            }
         }
+
+        public async Task<Device> GetByDeviceIdAsync(string deviceId) =>
+            await _context.Devices.Include(d => d.Data).FirstOrDefaultAsync(d => d.DeviceId == deviceId);
+
+        public async Task<IEnumerable<Device>> GetOnlineDevicesAsync() =>
+            await _context.Devices.Where(d => d.IsConnected).ToListAsync();
+
+   
     }
 }

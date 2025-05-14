@@ -53,6 +53,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "BCrypt.Net-Core": {
+              "target": "Package",
+              "version": "[1.6.0, )"
+            },
             "CoAPnet": {
               "target": "Package",
               "version": "[1.2.0, )"
@@ -63,7 +67,7 @@
             },
             "FluentValidation": {
               "target": "Package",
-              "version": "[11.11.0, )"
+              "version": "[12.0.0, )"
             },
             "FluentValidation.AspNetCore": {
               "target": "Package",
@@ -111,7 +115,7 @@
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.AspNetCore.Cors": {
               "target": "Package",
@@ -127,35 +131,35 @@
             },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.Extensions.Configuration": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.Extensions.Logging": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.Extensions.Options": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[9.0.5, )"
             },
             "Moq": {
               "target": "Package",
@@ -167,15 +171,15 @@
             },
             "RabbitMQ.Client": {
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[7.1.2, )"
             },
             "RabbitMQ.Client.OAuth2": {
               "target": "Package",
-              "version": "[1.0.0, )"
+              "version": "[2.0.0, )"
             },
             "RabbitMQ.Stream.Client": {
               "target": "Package",
-              "version": "[1.8.9, )"
+              "version": "[1.8.13, )"
             },
             "Serilog": {
               "target": "Package",
@@ -183,19 +187,19 @@
             },
             "StackExchange.Redis": {
               "target": "Package",
-              "version": "[2.8.24, )"
+              "version": "[2.8.37, )"
             },
             "Swashbuckle.AspNetCore.Swagger": {
               "target": "Package",
-              "version": "[7.2.0, )"
+              "version": "[8.1.1, )"
             },
             "Swashbuckle.AspNetCore.SwaggerGen": {
               "target": "Package",
-              "version": "[7.2.0, )"
+              "version": "[8.1.1, )"
             },
             "Swashbuckle.AspNetCore.SwaggerUI": {
               "target": "Package",
-              "version": "[7.2.0, )"
+              "version": "[8.1.1, )"
             },
             "System.Collections": {
               "target": "Package",
@@ -203,7 +207,7 @@
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[8.3.1, )"
+              "version": "[8.9.0, )"
             },
             "System.Linq": {
               "target": "Package",
@@ -215,7 +219,7 @@
             },
             "System.Text.Json": {
               "target": "Package",
-              "version": "[9.0.1, )"
+              "version": "[9.0.5, )"
             },
             "System.Threading": {
               "target": "Package",

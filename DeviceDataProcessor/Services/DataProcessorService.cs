@@ -10,11 +10,11 @@ namespace DeviceDataProcessor.Services
     public class DataProcessorService : IDataProcessorService
     {
         private readonly IDeviceDataRepository _deviceDataRepository; // مخزن داده‌های دستگاه
-        private readonly IRepository<Device> _deviceRepository; // مخزن دستگاه‌ها
+        private readonly IUserRepository<Device> _deviceRepository; // مخزن دستگاه‌ها
         private readonly IMessageQueueService _messageQueueService; // سرویس صف پیام
         private readonly RedisService _redisService; // سرویس Redis
 
-        public DataProcessorService(IDeviceDataRepository deviceDataRepository, IRepository<Device> deviceRepository, IMessageQueueService messageQueueService, RedisService redisService)
+        public DataProcessorService(IDeviceDataRepository deviceDataRepository, IUserRepository<Device> deviceRepository, IMessageQueueService messageQueueService, RedisService redisService)
         {
             _deviceDataRepository = deviceDataRepository; // دریافت مخزن داده‌های دستگاه
             _deviceRepository = deviceRepository; // دریافت مخزن دستگاه‌ها

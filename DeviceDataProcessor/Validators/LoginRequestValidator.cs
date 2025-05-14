@@ -8,8 +8,8 @@ namespace DeviceDataProcessor.Validators
     {
         public LoginRequestValidator()
         {
-            RuleFor(x => x.Username).NotEmpty().WithMessage("Username is required."); // اعتبارسنجی نام کاربری
-            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required."); // اعتبارسنجی پسورد
+            RuleFor(x => x.Username).NotEmpty().WithMessage("نام کاربری الزامی است."); // اعتبارسنجی نام کاربری
+            RuleFor(x => x.Password).NotEmpty().WithMessage("رمز عبور الزامی است."); // اعتبارسنجی پسورد
         }
     }
 }
