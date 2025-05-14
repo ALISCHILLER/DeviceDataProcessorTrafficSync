@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DeviceDataProcessor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d689744744d01e8640191b1a6e74341eef6747e4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d26d9adc460c4e68ced8c815db05e30ff0580f26")]
 [assembly: System.Reflection.AssemblyProductAttribute("DeviceDataProcessor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DeviceDataProcessor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

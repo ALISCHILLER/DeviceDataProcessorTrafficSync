@@ -46,8 +46,7 @@
               "RelativeToolTip": "Data\\IUserRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwAQAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-14T13:12:35.828Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-14T13:12:35.828Z"
             },
             {
               "$type": "Document",
@@ -59,8 +58,7 @@
               "RelativeToolTip": "Data\\DeviceDataRepository .cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-14T13:09:40.94Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-14T13:09:40.94Z"
             },
             {
               "$type": "Document",
@@ -72,8 +70,7 @@
               "RelativeToolTip": "Data\\UserRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-14T13:07:59.875Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-14T13:07:59.875Z"
             },
             {
               "$type": "Document",
@@ -83,7 +80,7 @@
               "RelativeDocumentMoniker": "Data\\DeviceRepository.cs",
               "ToolTip": "E:\\project-zar\\custom\\.net\\DeviceDataProcessor\\src\\DeviceDataProcessor\\Data\\DeviceRepository.cs",
               "RelativeToolTip": "Data\\DeviceRepository.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAADwvzcAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-14T13:07:27.157Z",
               "EditorCaption": ""
@@ -98,8 +95,7 @@
               "RelativeToolTip": "Data\\IRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAuwAYAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-14T13:06:18.012Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-14T13:06:18.012Z"
             },
             {
               "$type": "Document",
@@ -111,8 +107,7 @@
               "RelativeToolTip": "Data\\IDeviceDataRepository.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAADwvyQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-14T13:06:07.076Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-14T13:06:07.076Z"
             }
           ]
         }
