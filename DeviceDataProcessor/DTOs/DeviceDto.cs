@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DeviceDataProcessor.Models;
+using System;
 
 namespace DeviceDataProcessor.DTOs
 {
@@ -21,5 +22,21 @@ namespace DeviceDataProcessor.DTOs
         /// شناسه محور دستگاه (RID)
         /// </summary>
         public string RID { get; set; }
+
+        /// <summary>
+        /// شناسه منحصر به فرد دستگاه (مثل شماره سریال)
+        /// </summary>
+        public string DeviceId { get; set; }
+
+        /// <summary>
+        /// موقعیت جغرافیایی دستگاه (مثلاً "محور تهران - قم")
+        /// </summary>
+        public string Location { get; set; }
+
+
+        /// <summary>
+        /// وضعیت دستگاه – مشخص کننده اتصال و فعالیت دستگاه
+        /// </summary>
+        public DeviceStatus Status { get; set; }
     }
 }

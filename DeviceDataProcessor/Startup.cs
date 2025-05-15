@@ -35,9 +35,9 @@ public class Startup
         services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis")));
 
         // ثبت مخازن (Repositories)
-        services.AddScoped<IUserRepository<Device>, DeviceRepository>();
-        services.AddScoped<IUserRepository<User>, UserRepository>();
-        services.AddScoped<IUserRepository<DeviceData>, DeviceDataRepository>();
+        services.AddScoped<IDeviceRepository, DeviceRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IDeviceDataRepository, DeviceDataRepository>();
         services.AddScoped<IDeviceDataRepository, DeviceDataRepository>();
 
         // ثبت خدمات (Services)

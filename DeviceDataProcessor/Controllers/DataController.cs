@@ -1,55 +1,182 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DeviceDataProcessor.Services;
 using DeviceDataProcessor.DTOs;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DeviceDataProcessor.Controllers
 {
+    /// <summary>
+    /// کنترلر مدیریت داده‌های دستگاه – شامل متدهای ارسال، دریافت و به‌روزرسانی داده
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class DataController : ControllerBase
     {
-        private readonly IDataProcessorService _dataProcessorService; // سرویس پردازش داده‌ها
+        private readonly IDataProcessorService _dataProcessorService;
 
         public DataController(IDataProcessorService dataProcessorService)
         {
-            _dataProcessorService = dataProcessorService; // دریافت سرویس پردازش داده‌ها
+            _dataProcessorService = dataProcessorService;
         }
 
-        // متد برای ارسال داده‌های دستگاه
+        // --- داده‌های دستگاه ---
+
+        /// <summary>
+        /// ارسال داده جدید از دستگاه به سرور
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/data/send
+        ///     {
+        ///       "deviceId": "D123",
+        ///       "timestamp": "2025-04-05T10:00:00Z",
+        ///       "st": "10:00:00",
+        ///       "et": "10:10:00",
+        ///       "c1": 15,
+        ///       "c2": 3,
+        ///       "c3": 2,
+        ///       "c4": 0,
+        ///       "c5": 0,
+        ///       "asp": 60.5,
+        ///       "so": 2,
+        ///       "oo": 1,
+        ///       "esd": 0
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost("send")]
-        public async Task<IActionResult> SendData(DeviceDataDto data)
+        public async Task<IActionResult> SendData([FromBody] DeviceDataDto data)
         {
-            var result = await _dataProcessorService.ProcessDataAsync(data); // پردازش داده‌ها
-            if (!result)
-                return BadRequest("Failed to process data."); // در صورت ناموفق بودن پردازش، خطا برمی‌گرداند
+            if (data == null)
+                return BadRequest("داده‌ی دستگاه نمی‌تواند خالی باشد.");
 
-            return Ok("Data processed successfully."); // در صورت موفقیت، پیام موفقیت برمی‌گرداند
+            var result = await _dataProcessorService.ProcessDataAsync(data);
+            if (!result)
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "خطا در پردازش داده" });
+
+            return Ok(new { Message = "داده با موفقیت ذخیره شد.", Data = data });
         }
 
-        // متد برای دریافت داده‌های مربوط به یک دستگاه خاص
+        /// <summary>
+        /// دریافت تمام داده‌های یک دستگاه بر اساس DeviceId
+        /// </summary>
         [HttpGet("device/{deviceId}")]
         public async Task<IActionResult> GetDeviceData(string deviceId)
         {
-            var data = await _dataProcessorService.GetDeviceDataAsync(deviceId); // دریافت داده‌ها
-            return Ok(data); // داده‌های مربوط به دستگاه را برمی‌گرداند
+            var data = await _dataProcessorService.GetDeviceDataAsync(deviceId);
+
+            if (data == null || !data.Any())
+                return NotFound("هیچ داده‌ای برای این دستگاه یافت نشد.");
+
+            return Ok(data);
         }
 
-        // متد برای دریافت لیست تمام دستگاه‌ها
+        /// <summary>
+        /// دریافت آخرین داده ثبت شده از یک دستگاه
+        /// </summary>
+        [HttpGet("device/{deviceId}/latest")]
+        public async Task<IActionResult> GetLatestDeviceData(string deviceId)
+        {
+            var data = await _dataProcessorService.GetLatestDeviceDataAsync(deviceId);
+
+            if (data == null)
+                return NotFound("داده‌ای یافت نشد.");
+
+            return Ok(data);
+        }
+
+        /// <summary>
+        /// دریافت داده‌ها بر اساس بازه زمانی
+        /// </summary>
+        [HttpGet("device/{deviceId}/range")]
+        public async Task<IActionResult> GetDataByTimeRange(
+            string deviceId,
+            [FromQuery] DateTime from,
+            [FromQuery] DateTime to)
+        {
+            var data = await _dataProcessorService.GetDataByTimeRangeAsync(deviceId, from, to);
+
+            if (data == null || !data.Any())
+                return NotFound("داده‌ای در بازه زمانی مشخص یافت نشد.");
+
+            return Ok(data);
+        }
+
+        /// <summary>
+        /// دریافت داده‌های دارای تخلف
+        /// </summary>
+        [HttpGet("device/{deviceId}/violations")]
+        public async Task<IActionResult> GetViolationData(
+            string deviceId,
+            [FromQuery] string violationType)
+        {
+            var data = await _dataProcessorService.GetViolationDataAsync(deviceId, violationType);
+
+            if (data == null || !data.Any())
+                return NotFound("داده‌ای با این نوع تخلف یافت نشد.");
+
+            return Ok(data);
+        }
+
+        // --- دستگاه‌ها ---
+
+        /// <summary>
+        /// دریافت لیست تمام دستگاه‌ها
+        /// </summary>
         [HttpGet("devices")]
         public async Task<IActionResult> GetAllDevices()
         {
-            var devices = await _dataProcessorService.GetAllDevicesAsync(); // دریافت لیست دستگاه‌ها
-            return Ok(devices); // برگرداندن لیست دستگاه‌ها
+            var devices = await _dataProcessorService.GetAllDevicesAsync();
+            return Ok(devices);
         }
 
-        // متد برای به‌روزرسانی اطلاعات دستگاه
-        [HttpPut("device/{deviceId}")]
-        public async Task<IActionResult> UpdateDevice(string deviceId, DeviceUpdateDto updateDto)
+        /// <summary>
+        /// دریافت اطلاعات یک دستگاه بر اساس DeviceId
+        /// </summary>
+        [HttpGet("device/settings/{deviceId}")]
+        public async Task<IActionResult> GetDeviceSettings(string deviceId)
         {
-            var result = await _dataProcessorService.UpdateDeviceAsync(deviceId, updateDto); // به‌روزرسانی دستگاه
+            var settings = await _dataProcessorService.GetDeviceByIdAsync(deviceId);
+            if (settings == null)
+                return NotFound("دستگاهی با این شناسه یافت نشد.");
+
+            return Ok(settings);
+        }
+
+        /// <summary>
+        /// به‌روزرسانی تنظیمات یک دستگاه
+        /// </summary>
+        [HttpPut("device/settings/{deviceId}")]
+        public async Task<IActionResult> UpdateDeviceSettings(string deviceId, [FromBody] DeviceSettingsDto updateDto)
+        {
+            if (string.IsNullOrEmpty(deviceId))
+                return BadRequest("شناسه دستگاه الزامی است.");
+
+            if (updateDto == null)
+                return BadRequest("اطلاعات به‌روزرسانی نمی‌تواند خالی باشد.");
+
+            var result = await _dataProcessorService.UpdateSettingsAsync(deviceId, updateDto);
+
             if (!result)
-                return BadRequest("Failed to update device."); // در صورت ناموفق بودن، خطا برمی‌گرداند
-            return Ok("Device updated successfully."); // در صورت موفقیت، پیام موفقیت برمی‌گرداند
+                return BadRequest("بروزرسانی دستگاه با شکست مواجه شد.");
+
+            return Ok("تنظیمات دستگاه با موفقیت به‌روز شد.");
+        }
+
+        /// <summary>
+        /// حذف داده‌های قدیمی‌تر از یک تاریخ مشخص
+        /// </summary>
+        [HttpDelete("device/{deviceId}/clear-data")]
+        public async Task<IActionResult> DeleteOldData(string deviceId, [FromQuery] DateTime cutoffDate)
+        {
+            var result = await _dataProcessorService.DeleteOldDataAsync(deviceId, cutoffDate);
+
+            if (!result)
+                return BadRequest("حذف داده‌ها با شکست مواجه شد.");
+
+            return Ok("داده‌های قدیمی با موفقیت حذف شدند.");
         }
     }
 }
