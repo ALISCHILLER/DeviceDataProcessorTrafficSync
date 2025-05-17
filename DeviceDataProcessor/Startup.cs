@@ -14,7 +14,8 @@ using DeviceDataProcessor.Settings; // فضای نام مربوط به تنظی�
 using Microsoft.AspNetCore.Authentication.JwtBearer; // فضای نام مربوط به JWT
 using Microsoft.IdentityModel.Tokens; // فضای نام مربوط به توکن
 using System.Text;
-using Microsoft.OpenApi.Models; // فضای نام مربوط به رمزنگاری
+using Microsoft.OpenApi.Models;
+using Serilog; // فضای نام مربوط به رمزنگاری
 
 public class Startup
 {
@@ -27,6 +28,15 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+
+        // ✅ استفاده از Serilog به عنوان لاگر اصلی
+        services.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.ClearProviders(); // حذف فراهم‌کنندگان پیش‌فرض مثل ConsoleLogger
+            loggingBuilder.AddSerilog();     // استفاده از Serilog به عنوان لاگر اصلی
+        });
+
+
         // اتصال به دیتابیس SQL
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

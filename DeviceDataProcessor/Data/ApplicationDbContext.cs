@@ -21,6 +21,8 @@ namespace DeviceDataProcessor.Data
         public DbSet<User> Users { get; set; }         // جدول کاربران
         public DbSet<Device> Devices { get; set; }     // جدول دستگاه‌ها
         public DbSet<DeviceData> DeviceData { get; set; } // جدول داده‌های دستگاه
-        public DbSet<ApiResponse> ApiResponses { get; set; } // لاگ پاسخ‌های API
+                                                    
+        // اگر می‌خواهید لاگ‌های پاسخ API ذخیره کنید، یک مدل لاگ جداگانه تعریف کنید
+        public DbSet<ApiResponseLog> ApiResponseLogs { get; set; }
     }
 }

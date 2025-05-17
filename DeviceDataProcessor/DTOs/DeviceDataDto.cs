@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DeviceDataProcessor.Models;
+using System;
 
 namespace DeviceDataProcessor.DTOs
 {
@@ -8,68 +9,78 @@ namespace DeviceDataProcessor.DTOs
     public class DeviceDataDto
     {
         /// <summary>
-        /// شناسه دستگاه – مثل "D123" (الزامی)
+        /// شناسه دستگاه ارسال‌کننده داده
         /// </summary>
         public string DeviceId { get; set; }
 
         /// <summary>
-        /// زمان ثبت داده (UTC) – الزامی
+        /// زمان ثبت داده (شامل تاریخ و ساعت)
         /// </summary>
         public DateTime Timestamp { get; set; }
 
         /// <summary>
-        /// زمان شروع – فرمت hh:mm:ss (الزامی)
+        /// زمان شروع بازه (فقط زمان روز - hh:mm:ss)
         /// </summary>
         public TimeSpan ST { get; set; }
 
         /// <summary>
-        /// زمان پایان – فرمت hh:mm:ss (الزامی)
+        /// زمان پایان بازه (فقط زمان روز - hh:mm:ss)
         /// </summary>
         public TimeSpan ET { get; set; }
 
         /// <summary>
-        /// تعداد خودروهای کلاس 1 (سواری، وانت) – الزامی (باید ≥ 0 باشد)
+        /// تعداد جریان کلاس 1
         /// </summary>
         public int C1 { get; set; }
 
         /// <summary>
-        /// تعداد خودروهای کلاس 2 (کامیونت، مینی‌بوس) – الزامی (باید ≥ 0 باشد)
+        /// تعداد جریان کلاس 2
         /// </summary>
         public int C2 { get; set; }
 
         /// <summary>
-        /// تعداد خودروهای کلاس 3 (کامیون دو محور) – الزامی (باید ≥ 0 باشد)
+        /// تعداد جریان کلاس 3
         /// </summary>
         public int C3 { get; set; }
 
         /// <summary>
-        /// تعداد خودروهای کلاس 4 (اتوبوس) – الزامی (باید ≥ 0 باشد)
+        /// تعداد جریان کلاس 4
         /// </summary>
         public int C4 { get; set; }
 
         /// <summary>
-        /// تعداد خودروهای کلاس 5 (کامیون سه محور) – الزامی (باید ≥ 0 باشد)
+        /// تعداد جریان کلاس 5
         /// </summary>
         public int C5 { get; set; }
 
         /// <summary>
-        /// سرعت متوسط خودروها – اختیاری (باید > 0 باشد اگر موجود باشد)
+        /// سرعت متوسط (اختیاری)
         /// </summary>
         public double? ASP { get; set; }
 
         /// <summary>
-        /// تعداد تخلف‌های سرعت غیرمجاز – اختیاری (باید ≥ 0 باشد)
+        /// تعداد تخلفات سرعت (اختیاری)
         /// </summary>
         public int? SO { get; set; }
 
         /// <summary>
-        /// تعداد تخلف‌های سبقت غیرمجاز – اختیاری (باید ≥ 0 باشد)
+        /// تعداد تخلفات سبقت (اختیاری)
         /// </summary>
         public int? OO { get; set; }
 
         /// <summary>
-        /// تعداد تخلف‌های فاصله غیرمجاز – اختیاری (باید ≥ 0 باشد)
+        /// تعداد تخلفات فاصله غیرمجاز (اختیاری)
         /// </summary>
         public int? ESD { get; set; }
+
+        /// <summary>
+        /// مقدار اصلی داده (مثلاً سرعت) (اختیاری)
+        /// </summary>
+        public double? Value { get; set; }
+
+        /// <summary>
+        /// کیفیت داده – مقدار باید یکی از مقادیر enum DataQuality باشد (اختیاری)
+        /// </summary>
+        public DataQuality? Quality { get; set; }
     }
 }

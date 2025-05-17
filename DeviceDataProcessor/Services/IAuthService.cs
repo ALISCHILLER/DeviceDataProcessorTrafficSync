@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using DeviceDataProcessor.Models;
+using System.Threading.Tasks;
 
 namespace DeviceDataProcessor.Services
 {
@@ -6,6 +7,6 @@ namespace DeviceDataProcessor.Services
     public interface IAuthService
     {
         Task<string> AuthenticateAsync(string username, string password); // متد برای احراز هویت کاربر
-        Task<bool> RegisterAsync(string username, string password, string role); // متد برای ثبت نام کاربر
+        Task<bool> RegisterAsync(string username, string password, UserRole role); // متد برای ثبت نام کاربر
     }
 }

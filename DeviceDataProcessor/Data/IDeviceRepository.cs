@@ -1,64 +1,33 @@
 ﻿using DeviceDataProcessor.DTOs;
 using DeviceDataProcessor.Models;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DeviceDataProcessor.Data
 {
     /// <summary>
-    /// اینترفیس مخزن دستگاه – شامل تمام متدهای لازم برای مدیریت دستگاه و تنظیمات آن
+    /// اینترفیس مخزن دستگاه‌ها
+    /// شامل تمام متدهای لازم برای مدیریت دستگاه و داده‌های مرتبط با آن
+    /// اینترفیس از الگوی Repository پیروی می‌کند و پشتیبانی از عملیات async و CancellationToken دارد.
     /// </summary>
-    public interface IDeviceRepository : IRepository<Device>
+    public interface IDeviceRepository
     {
-        // --- عمومی ---
+        Task<Device> GetByDeviceIdAsync(string deviceId, CancellationToken cancellationToken = default);
+        Task<bool> IsDeviceConnectedAsync(string deviceId, CancellationToken cancellationToken = default);
+        Task<DeviceData> GetLatestDataByDeviceIdAsync(string deviceId, CancellationToken cancellationToken = default);
+        Task<IEnumerable<DeviceData>> GetDataByTimeRangeAsync(string deviceId, DateTime from, DateTime to, CancellationToken cancellationToken = default);
+        Task<IEnumerable<DeviceData>> GetViolationDataAsync(string deviceId, string violationType, CancellationToken cancellationToken = default);
+        Task<bool> DeleteOldDataAsync(string deviceId, DateTime cutoffDate, CancellationToken cancellationToken = default);
+        Task UpdateLastSeenAsync(string deviceId, DateTime timestamp, CancellationToken cancellationToken = default);
+        Task<bool> UpdateSettingsAsync(string deviceId, DeviceSettingsDto settings, CancellationToken cancellationToken = default);
 
-        /// <summary>
-        /// دریافت دستگاه بر اساس شناسه منحصر به فرد (DeviceId)
-        /// </summary>
-        Task<Device> GetByDeviceIdAsync(string deviceId);
-
-        /// <summary>
-        /// چک کردن اتصال دستگاه به سرور
-        /// </summary>
-        Task<bool> IsDeviceConnectedAsync(string deviceId);
-
-        /// <summary>
-        /// بروزرسانی زمان آخرین داده دریافتی (LastSeen)
-        /// </summary>
-        Task UpdateLastSeenAsync(string deviceId, DateTime timestamp);
-
-        // --- داده‌های دستگاه ---
-
-        /// <summary>
-        /// دریافت آخرین داده ثبت شده از دستگاه
-        /// </summary>
-        Task<DeviceData> GetLatestDataByDeviceIdAsync(string deviceId);
-
-        /// <summary>
-        /// دریافت داده‌های دستگاه بر اساس بازه زمانی
-        /// </summary>
-        Task<IEnumerable<DeviceData>> GetDataByTimeRangeAsync(string deviceId, DateTime from, DateTime to);
-
-        /// <summary>
-        /// دریافت داده‌های دارای تخلف (Speeding, Overtaking, SafeDistance)
-        /// </summary>
-        Task<IEnumerable<DeviceData>> GetViolationDataAsync(string deviceId, string violationType);
-
-        /// <summary>
-        /// حذف داده‌های قدیمی‌تر از یک تاریخ مشخص
-        /// </summary>
-        Task<bool> DeleteOldDataAsync(string deviceId, DateTime cutoffDate);
-
-        // --- تنظیمات دستگاه ---
-
-        /// <summary>
-        /// دریافت تنظیمات کامل دستگاه
-        /// </summary>
-        Task<DeviceSettingsDto> GetSettingsByDeviceIdAsync(string deviceId);
-
-        /// <summary>
-        /// به‌روزرسانی تنظیمات دستگاه
-        /// </summary>
-        Task<bool> UpdateSettingsAsync(string deviceId, DeviceSettingsDto settings);
+        // Optional general CRUD
+        Task<IEnumerable<Device>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<Device> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task AddAsync(Device device, CancellationToken cancellationToken = default);
+        Task UpdateAsync(Device device, CancellationToken cancellationToken = default);
+        Task DeleteAsync(int id, CancellationToken cancellationToken = default);
     }
 }

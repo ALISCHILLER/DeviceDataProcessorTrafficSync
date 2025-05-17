@@ -3,21 +3,23 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 using DeviceDataProcessor.Workers;
+using Serilog;
 
 public class Program
 {
     public static async Task Main(string[] args)
     {
-        var host = CreateHostBuilder(args).Build();
+        var builder = CreateHostBuilder(args).Build();
 
         // شروع پردازش داده‌ها
-        using (var scope = host.Services.CreateScope())
+        using (var scope = builder.Services.CreateScope())
         {
             var dataProcessorWorker = scope.ServiceProvider.GetRequiredService<DataProcessorWorker>();
             Task.Run(() => dataProcessorWorker.StartProcessingAsync()); // اجرای پردازش داده‌ها در پس‌زمینه
         }
 
-        await host.RunAsync(); // اجرای برنامه
+
+        await builder.RunAsync(); // اجرای برنامه
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -1,139 +1,109 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-// فضاهای نام لازم برای پروژه
-using DeviceDataProcessor.Models;         // مدل کاربر
-using DeviceDataProcessor.Data;           // رابط IRepository و دسترسی به داده‌ها
-using DeviceDataProcessor.Settings;       // تنظیمات JWT
-using Microsoft.Extensions.Options;       // برای خواندن تنظیمات از appsettings.json
-using Microsoft.IdentityModel.Tokens;     // کتابخانه JWT برای احراز هویت
-using BCrypt.Net;                          // کتابخانه BCrypt برای هش کردن رمز عبور
+using DeviceDataProcessor.Models;
+using DeviceDataProcessor.Data;
+using DeviceDataProcessor.Settings;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using BCrypt.Net;
 
 namespace DeviceDataProcessor.Services
 {
     /// <summary>
-    /// پیاده‌سازی سرویس احراز هویت با JWT و BCrypt
-    /// شامل متد‌های لاگین و ثبت‌نام کاربر
+    /// سرویس احراز هویت کاربران با JWT و BCrypt
+    /// شامل متدهای ورود و ثبت نام
     /// </summary>
     public class AuthService : IAuthService
     {
-        // مخزن کاربران (Repository) برای دسترسی به داده‌ها
-        private readonly IUserRepository<User> _userRepository;
-
-        // تنظیمات JWT برای ایجاد توکن
+        private readonly IUserRepository _userRepository;
         private readonly JwtSettings _jwtSettings;
 
-        /// <summary>
-        /// سازنده کلاس AuthService
-        /// </summary>
-        /// <param name="userRepository">مخزن کاربران</param>
-        /// <param name="jwtSettings">تنظیمات JWT</param>
-        public AuthService(IUserRepository<User> userRepository, IOptions<JwtSettings> jwtSettings)
+        public AuthService(IUserRepository userRepository, IOptions<JwtSettings> jwtSettings)
         {
-            _userRepository = userRepository;
-            _jwtSettings = jwtSettings.Value;
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _jwtSettings = jwtSettings?.Value ?? throw new ArgumentNullException(nameof(jwtSettings));
         }
 
         /// <summary>
-        /// متد برای احراز هویت کاربر (ورود کاربر)
+        /// احراز هویت کاربر و تولید توکن JWT
         /// </summary>
-        /// <param name="username">نام کاربری</param>
-        /// <param name="password">رمز عبور</param>
-        /// <returns>توکن JWT یا null در صورت ناموفق بودن</returns>
         public async Task<string> AuthenticateAsync(string username, string password)
         {
-            // جستجوی کاربر با نام کاربری وارد شده
-            var user = await _userRepository.GetByUsernameAsync(username);
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                return null;
 
-            // اگر کاربر وجود نداشته باشد یا رمز اشتباه باشد، null برمی‌گرداند
+            var normalizedUsername = username.Trim().ToLower();
+            var user = await _userRepository.GetByUsernameAsync(normalizedUsername);
+
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
                 return null;
 
-            // در صورت موفقیت، توکن JWT ایجاد می‌شود و بازمی‌گردد
             return GenerateJwtToken(user);
         }
 
         /// <summary>
-        /// متد برای ثبت کاربر جدید
+        /// ثبت نام کاربر جدید
         /// </summary>
-        /// <param name="username">نام کاربری</param>
-        /// <param name="password">رمز عبور</param>
-        /// <param name="role">نقش کاربر</param>
-        /// <returns>true در صورت موفقیت - false در صورت وجود کاربر مشابه</returns>
         public async Task<bool> RegisterAsync(string username, string password, string role)
         {
-            // بررسی اینکه نام کاربری خالی نباشد
+            username = username?.Trim();
+            password = password?.Trim();
+
             if (string.IsNullOrWhiteSpace(username))
                 throw new ArgumentException("نام کاربری نمی‌تواند خالی باشد.");
 
-            // بررسی طول رمز عبور (حداقل 6 کاراکتر)
-            if (password.Length < 6)
-                throw new ArgumentException("رمز عبور باید حداقل 6 کاراکتر باشد.");
+            if (string.IsNullOrWhiteSpace(password) || password.Length < 6)
+                throw new ArgumentException("رمز عبور باید حداقل ۶ کاراکتر باشد.");
 
-            // بررسی اینکه آیا کاربر با این نام کاربری وجود دارد
-            var existingUser = await _userRepository.GetByUsernameAsync(username);
+            var existingUser = await _userRepository.GetByUsernameAsync(username.ToLower());
             if (existingUser != null)
-                return false; // کاربر قبلاً وجود دارد
+                return false;
 
-            // هش کردن رمز عبور با استفاده از BCrypt
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
-            // ایجاد کاربر جدید
+            if (!Enum.TryParse<UserRole>(role, out var parsedRole))
+                throw new ArgumentException("نقش کاربر نامعتبر است.");
+
             var user = new User
             {
                 Username = username,
                 PasswordHash = hashedPassword,
-                Role = role
+                Role = parsedRole
             };
 
-            // ذخیره کاربر در دیتابیس
             await _userRepository.AddAsync(user);
-
-            // بازگشت true به معنای موفقیت در ثبت کاربر
             return true;
         }
 
         /// <summary>
-        /// تولید توکن JWT برای کاربر وارد شده
+        /// تولید توکن JWT برای کاربر
         /// </summary>
-        /// <param name="user">کاربر وارد شده</param>
-        /// <returns>رشته توکن JWT</returns>
         private string GenerateJwtToken(User user)
         {
-            // ایجاد JwtSecurityTokenHandler برای مدیریت توکن
             var tokenHandler = new JwtSecurityTokenHandler();
-
-            // تبدیل کلید مخفی به آرایه بایتی برای استفاده در توکن
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
 
-            // تنظیمات توکن: سوژه، اعتبار، امضای دیجیتال و ...
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
+            };
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                // اضافه کردن Claims به توکن
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // شناسه کاربر
-                    new Claim(ClaimTypes.Name, user.Username),               // نام کاربری
-                    new Claim(ClaimTypes.Role, user.Role)                   // نقش کاربر
-                }),
-
-                // زمان انقضای توکن (به دقیقه)
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.TokenValidityInMinutes),
-
-                // تنظیمات امضای توکن با الگوریتم HmacSha256
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)
             };
 
-            // ایجاد توکن با استفاده از تنظیمات
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            // تبدیل توکن به رشته و بازگرداندن آن
             return tokenHandler.WriteToken(token);
         }
     }

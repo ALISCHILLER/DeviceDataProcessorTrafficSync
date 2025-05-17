@@ -4,6 +4,7 @@ using DeviceDataProcessor.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeviceDataProcessor.Services
 {
@@ -216,5 +217,48 @@ namespace DeviceDataProcessor.Services
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<DeviceDataDto>> GetDataByTimeRangeAsync(string deviceId, DateTime from, DateTime to)
+        {
+            var data = await _context.DeviceData
+                .Where(d => d.DeviceId == deviceId && d.Timestamp >= from && d.Timestamp <= to)
+                .ToListAsync();
+
+            return data.Select(d => new DeviceDataDto
+            {
+                DeviceId = d.DeviceId,
+                Timestamp = d.Timestamp,
+                St = d.St,
+                Et = d.Et,
+                C1 = d.C1,
+                C2 = d.C2,
+                C3 = d.C3,
+                C4 = d.C4,
+                C5 = d.C5,
+                Asp = d.Asp,
+                So = d.So,
+                Oo = d.Oo,
+                Esd = d.Esd
+            });
+        }
+
+        public async Task<bool> UpdateDeviceAsync(string deviceId, DeviceSettingsDto updateDto)
+        {
+            var device = await _context.Devices.FirstOrDefaultAsync(d => d.DeviceId == deviceId);
+
+            if (device == null)
+                return false;
+
+            // فرض بر این است که فیلدهای زیر در DeviceSettingsDto موجودند:
+            device.Name = updateDto.Name;
+            device.Location = updateDto.Location;
+            device.IsActive = updateDto.IsActive;
+            // سایر فیلدهایی که لازم است...
+
+            _context.Devices.Update(device);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

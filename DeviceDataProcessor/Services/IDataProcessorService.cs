@@ -68,5 +68,11 @@ namespace DeviceDataProcessor.Services
         /// به‌روزرسانی وضعیت دستگاه (Online/Offline) و زمان آخرین دیده شدن
         /// </summary>
         Task<bool> UpdateConnectionStatusAsync(string deviceId, bool isConnected);
+
+
+        Task<IEnumerable<DeviceDataDto>> GetDataByTimeRangeAsync(string deviceId, DateTime from, DateTime to);
+
+
+        Task<bool> UpdateDeviceAsync(string deviceId, DeviceSettingsDto updateDto);
     }
 }
